@@ -112,12 +112,27 @@ class DefaultSubscriber implements EventSubscriberInterface
 		$condition->save();
 
 		// page hidden
-		$condition                                 = new ConditionModel();
-		$condition->pid                            = $root->id;
-		$condition->sorting                        = 512;
-		$condition->type                           = 'page_hide';
-		$condition->page_hide_accepted_hide_status = '';
-		$condition->save();
+		$or          = new ConditionModel();
+		$or->pid     = $root->id;
+		$or->sorting = 512;
+		$or->type    = 'or';
+		$or->save();
+
+		{
+			$condition                                 = new ConditionModel();
+			$condition->pid                            = $or->id;
+			$condition->sorting                        = 128;
+			$condition->type                           = 'page_hide';
+			$condition->page_hide_accepted_hide_status = '';
+			$condition->save();
+
+			$condition                                   = new ConditionModel();
+			$condition->pid                              = $or->id;
+			$condition->sorting                          = 256;
+			$condition->type                             = 'user_login';
+			$condition->user_login_accepted_login_status = 'logged_in';
+			$condition->save();
+		}
 
 		// page type
 		$or          = new ConditionModel();
